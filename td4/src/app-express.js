@@ -1,9 +1,14 @@
 import express from 'express';
+import morgan from 'morgan'
 
-const host = 'localhost';
-const port = 8080;
+process.loadEnvFile();
+
+const host = process.env.HOST;
+const port = process.env.PORT;
 
 const app = express();
+
+app.use(morgan('combined'));
 
 app.set('view engine', 'ejs');
 

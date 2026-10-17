@@ -1,2 +1,42 @@
 ### Default URL
 GET http://localhost:8080/
+
+### EJS Home URL
+GET http://localhost:8080/home
+
+### EJS User URL
+GET http://localhost:8080/user/milan
+
+
+
+
+### 1. Créer un contact
+# @name createContact
+POST http://localhost:8080/contacts
+Content-Type: application/json
+
+{
+    "name": "milan",
+    "age": 22
+}
+
+### 2. Récupérer automatiquement l'ID du contact qui vient d'être créé
+@contactId = {{createContact.response.body.id}}
+
+### 3. Lister tous les contacts
+GET http://localhost:8080/contacts
+
+### 4. Obtenir les infos du contact créé
+GET http://localhost:8080/contacts/{{contactId}}
+
+### 5. Mettre à jour ce contact
+PUT http://localhost:8080/contacts/{{contactId}}
+Content-Type: application/json
+
+{
+    "name": "milan_modifie",
+    "age": 25
+}
+
+### 6. Supprimer ce contact
+DELETE http://localhost:8080/contacts/{{contactId}}
