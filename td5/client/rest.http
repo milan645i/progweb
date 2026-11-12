@@ -1,31 +1,66 @@
-### Default URL
-GET http://localhost:5000/
-
 ### Default API URL
 GET http://localhost:5000/api/
 
+
+### ==========================================
+### URL TEST WITHOUT AUTHENTICATION
+### ==========================================
+
+### Get all contacts (should not work)
+GET http://localhost:5000/api/contacts
+
+
+### ==========================================
+### AUTHENTICATION
+### ==========================================
+
+### Register a new user
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "mySuperPassword"
+}
+
+### Login and get token
+# @name login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "mySuperPassword"
+}
+
+
+### ==========================================
+### CONTACTS (PROTECTED ROUTES)
+### ==========================================
+
 ### Get all contacts
 GET http://localhost:5000/api/contacts
+Authorization: Bearer {{login.response.body.data.token}}
 
 ### Add a new contact
 # @name createContact
 POST http://localhost:5000/api/contacts
 Content-Type: application/json
+Authorization: Bearer {{login.response.body.data.token}}
 
 {
     "name": "james",
     "age": 20
 }
 
-### 2. Récupérer automatiquement l'ID du contact qui vient d'être créé
-@contactId = {{createContact.response.body.data._id}}
-
 ### Get contact by ID
-GET http://localhost:5000/api/contacts/{{contactId}}
+GET http://localhost:5000/api/contacts/{{createContact.response.body.data._id}}
+Authorization: Bearer {{login.response.body.data.token}}
 
 ### Update contact by ID
-PUT http://localhost:5000/api/contacts/{{contactId}}
+PUT http://localhost:5000/api/contacts/{{createContact.response.body.data._id}}
 Content-Type: application/json
+Authorization: Bearer {{login.response.body.data.token}}
 
 {
     "name": "james updated",
@@ -33,4 +68,5 @@ Content-Type: application/json
 }
 
 ### Delete contact by ID
-DELETE http://localhost:5000/api/contacts/{{contactId}}
+DELETE http://localhost:5000/api/contacts/{{createContact.response.body.data._id}}
+Authorization: Bearer {{login.response.body.data.token}}
